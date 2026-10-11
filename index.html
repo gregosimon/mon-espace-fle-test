@@ -658,7 +658,14 @@ function initTeacherMode(remoteRows){
 }
 
 function initStudentMode(teacherId,quizId){
-  $('teacherApp').classList.add('hidden'); $('studentApp').classList.remove('hidden'); const wrap=$('studentContainer'); const hasPeer=typeof Peer!=='undefined'; if(!hasPeer){wrap.innerHTML='<div class="warn">La bibliothèque de connexion n\'est pas disponible.</div>'; return;} let peer=null,conn=null,myName='',currentState=null,localAnswers={},sessionFinished=false; renderJoin();
+  $('loginGate').classList.add('hidden');
+  $('teacherApp').classList.add('hidden');
+  $('studentApp').classList.remove('hidden');
+  const wrap=$('studentContainer');
+  const hasPeer=typeof Peer!=='undefined';
+  if(!hasPeer){wrap.innerHTML='<div class="warn">La bibliothèque de connexion n\'est pas disponible.</div>'; return;}
+  let peer=null,conn=null,myName='',currentState=null,localAnswers={},sessionFinished=false;
+  renderJoin();
   function renderJoin(){wrap.innerHTML=`<div class="student-head"><span class="pill">Connexion élève</span><h2 style="margin:12px 0 8px;font-family:Nunito,sans-serif;font-size:30px">Rejoindre le quiz</h2><p class="muted">Entrez votre prénom pour participer.</p></div><label class="field">Prénom <input id="studentNameInput" type="text" maxlength="40" placeholder="Votre prénom"></label><button id="studentJoinBtn" style="width:100%">Se connecter</button><p class="hint" style="margin-top:12px">Quiz : ${escapeHtml((quizCatalog[quizId]||{}).title||quizId||'activité')}</p>`; $('studentJoinBtn').onclick=join; $('studentNameInput').addEventListener('keydown',e=>{if(e.key==='Enter')join();});}
   function join(){myName=($('studentNameInput').value||'').trim().slice(0,40); if(!myName){alert('Veuillez saisir votre prénom.'); return;} wrap.innerHTML='<p class="muted">Connexion en cours…</p>'; peer=new Peer('student-'+Math.random().toString(36).slice(2,10)); peer.on('open',()=>{conn=peer.connect(teacherId); conn.on('open',()=>{conn.send({type:'join',name:myName,quizId}); renderWaiting('Connexion établie. En attente de la première question…');}); conn.on('data',data=>handleState(data)); conn.on('close',()=>{if(!sessionFinished)renderWaiting('La session a été fermée.');}); conn.on('error',()=>renderWaiting('Erreur de connexion.'));}); peer.on('error',()=>renderWaiting('Impossible de se connecter à la session.'));}
   function renderWaiting(text){wrap.innerHTML=`<div class="student-head"><span class="pill">${escapeHtml(myName||'Élève')}</span><h2 style="margin:12px 0 8px;font-family:Nunito,sans-serif;font-size:30px">En attente</h2><p class="muted">${escapeHtml(text)}</p></div>`;}
