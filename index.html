@@ -311,14 +311,15 @@ hr.separator{border:0;border-top:1px solid #e4ddf7;margin:20px 0}
 
   <section id="delfExerciseSection" class="hidden">
     <div class="delf-exercise">
+      <div id="delfExerciseTabs" class="delf-levels" style="margin-bottom:16px" aria-label="Exercices de compréhension orale B1"></div>
       <div class="panel">
         <span class="tag">B1 · Compréhension de l’oral</span>
-        <h2 style="margin-top:14px">Exercice 1 · La fête de Célia</h2>
-        <p class="muted">Lis les six questions, écoute deux fois la conversation, puis réponds. Barème officiel : 7 points.</p>
+        <h2 id="delfExerciseTitle" style="margin-top:14px"></h2>
+        <p id="delfExerciseIntro" class="muted"></p>
         <div class="delf-audio">
           <div class="toolbar"><button id="delfListenBtn">▶ Première écoute</button><button id="delfListenAgainBtn" class="button-soft">↺ Deuxième écoute</button></div>
-          <audio id="delfAudio" controls preload="metadata" src="assets/audio/delf-b1-tp-coll-exemple1-exercice1.mp3" style="display:block;width:100%;margin-top:16px"></audio>
-          <p id="delfAudioStatus" class="hint" role="status">Document sonore officiel prêt · durée : environ 4 min 41 s.</p>
+          <audio id="delfAudio" controls preload="metadata" style="display:block;width:100%;margin-top:16px"></audio>
+          <p id="delfAudioStatus" class="hint" role="status"></p>
         </div>
         <form id="delfQuizForm"></form>
         <div class="toolbar"><button id="delfSubmitBtn" type="button">Corriger mes réponses</button><button id="delfResetBtn" type="button" class="button-soft">Recommencer</button></div>
@@ -586,31 +587,48 @@ function initTeacherMode(remoteRows){
     {id:'pe',icon:'✍️',name:'Production écrite',short:'PE'},
     {id:'po',icon:'🗣️',name:'Production orale',short:'PO'}
   ];
-  const delfQuestions=[
-    {prompt:'Qu’est-ce que Célia va fêter ?',choices:['Son diplôme.','Son mariage.','Son anniversaire.'],answer:2,points:1},
-    {prompt:'Il y aura seulement quelques amis à la fête parce que…',choices:['la maison est petite.','beaucoup ne sont pas disponibles.','Célia veut avoir le temps de discuter avec chacun.'],answer:2,points:1.5},
-    {prompt:'Lilian va arriver un peu plus tard parce qu’il…',choices:['va manger chez ses parents.','doit s’occuper de ses enfants.','travaille une partie du week-end.'],answer:2,points:1},
-    {prompt:'Lilian accepte de venir à la fête parce qu’il…',choices:['adore la montagne.','est très proche de Célia.','souhaite découvrir la région.'],answer:1,points:1.5},
-    {prompt:'Le repas de la fête sera préparé par…',choices:['Célia.','tout le monde.','un restaurateur.'],answer:1,points:1},
-    {prompt:'Pour sa fête, Célia espère…',choices:['qu’il fera beau.','qu’elle aura un beau cadeau.','que tous ses amis viendront.'],answer:2,points:1}
-  ];
-  let selectedDelfLevel='B1';
+  const delfExerciseCatalog={
+    'b1-co-1':{label:'Exercice 1',title:'Exercice 1 · La fête de Célia',intro:'Lis les six questions, écoute deux fois la conversation, puis réponds.',audio:'assets/audio/delf-b1-tp-coll-exemple1-exercice1.mp3',duration:'environ 4 min 41 s',total:7,questions:[
+      {prompt:'Qu’est-ce que Célia va fêter ?',choices:['Son diplôme.','Son mariage.','Son anniversaire.'],answer:2,points:1},
+      {prompt:'Il y aura seulement quelques amis à la fête parce que…',choices:['la maison est petite.','beaucoup ne sont pas disponibles.','Célia veut avoir le temps de discuter avec chacun.'],answer:2,points:1.5},
+      {prompt:'Lilian va arriver un peu plus tard parce qu’il…',choices:['va manger chez ses parents.','doit s’occuper de ses enfants.','travaille une partie du week-end.'],answer:2,points:1},
+      {prompt:'Lilian accepte de venir à la fête parce qu’il…',choices:['adore la montagne.','est très proche de Célia.','souhaite découvrir la région.'],answer:1,points:1.5},
+      {prompt:'Le repas de la fête sera préparé par…',choices:['Célia.','tout le monde.','un restaurateur.'],answer:1,points:1},
+      {prompt:'Pour sa fête, Célia espère…',choices:['qu’il fera beau.','qu’elle aura un beau cadeau.','que tous ses amis viendront.'],answer:2,points:1}
+    ]},
+    'b1-co-2':{label:'Exercice 2',title:'Exercice 2 · Un regard pour toi',intro:'Lis les sept questions, écoute deux fois l’émission de radio, puis réponds.',audio:'assets/audio/delf-b1-tp-coll-exemple1-exercice2.mp3',duration:'environ 5 min 36 s',total:9,questions:[
+      {prompt:'Grâce à Un regard pour toi, les personnes malvoyantes peuvent acheter leurs vêtements…',choices:['accompagnées par un bénévole.','dans des magasins spécialisés.','sur le site internet de l’association.'],answer:0,points:1},
+      {prompt:'Hayette trouve que les employés des magasins sont trop…',choices:['curieux.','occupés.','désagréables.'],answer:1,points:1},
+      {prompt:'Grâce à l’association, Hayette…',choices:['a de nouveaux amis.','s’habille de manière différente.','dépense moins d’argent pour s’habiller.'],answer:1,points:1},
+      {prompt:'Les collègues d’Hayette…',choices:['lui donnent des conseils.','sont surpris par sa façon de s’habiller.','veulent savoir où elle trouve ses vêtements.'],answer:2,points:1.5},
+      {prompt:'Pour les malvoyants, les vêtements permettent de…',choices:['développer la confiance en soi.','s’intégrer professionnellement.','discuter de la mode avec leurs amis.'],answer:0,points:1.5},
+      {prompt:'Quel appel lance Hayette ?',choices:['Elle a besoin de personnes pour l’aider.','Elle invite les malvoyants à la contacter.','Elle recherche un local pour l’association.'],answer:0,points:1.5},
+      {prompt:'Quand ils entrent dans l’association, les bénévoles doivent…',choices:['assister à une présentation de la responsable.','participer à une réunion avec d’autres membres.','avoir un rendez-vous téléphonique avec un malvoyant.'],answer:1,points:1.5}
+    ]}
+  };
+  let selectedDelfLevel='B1',selectedDelfExercise='b1-co-1';
   function getDelfProgress(){try{return JSON.parse(localStorage.getItem(DELF_PROGRESS_KEY)||'{}')||{};}catch{return {};}}
-  function saveDelfResult(score){const progress=getDelfProgress();progress['B1-co']={score,total:7,completed:true,updatedAt:new Date().toISOString()};localStorage.setItem(DELF_PROGRESS_KEY,JSON.stringify(progress));}
+  function saveDelfResult(score){const progress=getDelfProgress(),exercise=delfExerciseCatalog[selectedDelfExercise];progress[selectedDelfExercise]={score,total:exercise.total,completed:true,updatedAt:new Date().toISOString()};localStorage.setItem(DELF_PROGRESS_KEY,JSON.stringify(progress));}
   function openDelf(){closeLiveSession();showSection('delf');setBack('Accueil',renderHome);renderDelf();}
   function renderDelf(){
     const progress=getDelfProgress(),levels=['A1','A2','B1','B2'];
     $('delfLevelTitle').textContent='Niveau '+selectedDelfLevel;
     $('delfLevelTabs').innerHTML=levels.map(level=>`<button type="button" class="delf-tab ${level===selectedDelfLevel?'active':''}" data-level="${level}">${level}</button>`).join('');
     $('delfLevelTabs').querySelectorAll('[data-level]').forEach(btn=>btn.onclick=()=>{selectedDelfLevel=btn.dataset.level;renderDelf();});
-    const completed=delfSkills.filter(skill=>progress[selectedDelfLevel+'-'+skill.id]?.completed).length;
+    const coDone=['b1-co-1','b1-co-2'].filter(id=>progress[id]?.completed).length;
+    const completed=delfSkills.filter(skill=>skill.id==='co'&&selectedDelfLevel==='B1'?coDone===2:progress[selectedDelfLevel+'-'+skill.id]?.completed).length;
     const percent=Math.round(completed/delfSkills.length*100);$('delfOverallLabel').textContent='Progression : '+percent+' %';$('delfOverallBar').style.width=percent+'%';
-    $('delfSkillGrid').innerHTML=delfSkills.map(skill=>{const ready=selectedDelfLevel==='B1'&&skill.id==='co';const result=progress[selectedDelfLevel+'-'+skill.id];return `<article class="quiz-card delf-skill-card ${ready?'':'unavailable'}"><div class="skill-icon">${skill.icon}</div><strong>${escapeHtml(skill.name)}</strong><span>${result?`Meilleur résultat : ${result.score}/${result.total}`:ready?'Un premier entraînement original est disponible.':'Structure prête · activités à ajouter.'}</span><button type="button" ${ready?'data-delf-exercise="b1-co"':'disabled'} class="${ready?'':'button-soft'}">${result?'Refaire l’exercice':ready?'Commencer':'À venir'}</button></article>`;}).join('');
+    $('delfSkillGrid').innerHTML=delfSkills.map(skill=>{const ready=selectedDelfLevel==='B1'&&skill.id==='co';const result=progress[selectedDelfLevel+'-'+skill.id];const detail=ready?`${coDone}/2 exercice${coDone>1?'s':''} terminé${coDone>1?'s':''}`:result?`Meilleur résultat : ${result.score}/${result.total}`:'Structure prête · activités à ajouter.';return `<article class="quiz-card delf-skill-card ${ready?'':'unavailable'}"><div class="skill-icon">${skill.icon}</div><strong>${escapeHtml(skill.name)}</strong><span>${detail}</span><button type="button" ${ready?'data-delf-exercise="b1-co"':'disabled'} class="${ready?'':'button-soft'}">${coDone?'Continuer':'Commencer'}</button></article>`;}).join('');
     const launch=document.querySelector('[data-delf-exercise]');if(launch)launch.onclick=openDelfExercise;
   }
   function openDelfExercise(){showSection('delfExercise');setBack('Préparer le DELF',openDelf);renderDelfQuiz();}
   function renderDelfQuiz(){
-    $('delfQuizForm').innerHTML=delfQuestions.map((q,i)=>`<fieldset class="delf-question"><legend>${i+1}. ${escapeHtml(q.prompt)} <span class="inline-note">${String(q.points).replace('.',',')} point${q.points>1?'s':''}</span></legend>${q.choices.map((choice,j)=>`<label class="delf-answer"><input type="radio" name="delf-q${i}" value="${j}"> <strong>${String.fromCharCode(65+j)}</strong> · ${escapeHtml(choice)}</label>`).join('')}</fieldset>`).join('');
+    const exercise=delfExerciseCatalog[selectedDelfExercise];
+    $('delfExerciseTabs').innerHTML=Object.entries(delfExerciseCatalog).map(([id,item])=>`<button type="button" class="delf-tab ${id===selectedDelfExercise?'active':''}" data-delf-tab="${id}">${item.label}</button>`).join('');
+    $('delfExerciseTabs').querySelectorAll('[data-delf-tab]').forEach(btn=>btn.onclick=()=>{selectedDelfExercise=btn.dataset.delfTab;$('delfAudio').pause();renderDelfQuiz();});
+    $('delfExerciseTitle').textContent=exercise.title;$('delfExerciseIntro').textContent=exercise.intro+` Barème officiel : ${exercise.total} points.`;
+    const audio=$('delfAudio');audio.src=exercise.audio;audio.load();$('delfAudioStatus').textContent='Document sonore officiel prêt · durée : '+exercise.duration+'.';
+    $('delfQuizForm').innerHTML=exercise.questions.map((q,i)=>`<fieldset class="delf-question"><legend>${i+1}. ${escapeHtml(q.prompt)} <span class="inline-note">${String(q.points).replace('.',',')} point${q.points>1?'s':''}</span></legend>${q.choices.map((choice,j)=>`<label class="delf-answer"><input type="radio" name="delf-q${i}" value="${j}"> <strong>${String.fromCharCode(65+j)}</strong> · ${escapeHtml(choice)}</label>`).join('')}</fieldset>`).join('');
     $('delfResult').className='hidden';$('delfResult').textContent='';
   }
   function playDelfAudio(){
@@ -618,10 +636,10 @@ function initTeacherMode(remoteRows){
     audio.currentTime=0;audio.play().catch(()=>{$('delfAudioStatus').textContent='Clique sur le lecteur audio pour démarrer l’écoute.';});$('delfAudioStatus').textContent='Lecture en cours…';
   }
   function submitDelfQuiz(){
-    let score=0,answered=0;delfQuestions.forEach((q,i)=>{const checked=document.querySelector(`input[name="delf-q${i}"]:checked`);if(checked){answered++;if(Number(checked.value)===q.answer)score+=q.points;}});
+    const exercise=delfExerciseCatalog[selectedDelfExercise];let score=0,answered=0;exercise.questions.forEach((q,i)=>{const checked=document.querySelector(`input[name="delf-q${i}"]:checked`);if(checked){answered++;if(Number(checked.value)===q.answer)score+=q.points;}});
     const result=$('delfResult');result.classList.remove('hidden','success','retry');
-    if(answered<delfQuestions.length){result.classList.add('retry');result.textContent=`Réponds encore à ${delfQuestions.length-answered} question(s) avant de corriger.`;return;}
-    saveDelfResult(score);result.classList.add(score>=5?'success':'retry');result.innerHTML=`Résultat : <strong>${String(score).replace('.',',')}/7</strong>. ${score>=5?'Très bien ! La compréhension globale et les détails sont acquis.':'Réécoute la conversation et repère les raisons données par les personnages.'}`;
+    if(answered<exercise.questions.length){result.classList.add('retry');result.textContent=`Réponds encore à ${exercise.questions.length-answered} question(s) avant de corriger.`;return;}
+    const success=score/exercise.total>=.7;saveDelfResult(score);result.classList.add(success?'success':'retry');result.innerHTML=`Résultat : <strong>${String(score).replace('.',',')}/${exercise.total}</strong>. ${success?'Très bien ! La compréhension globale et les détails sont acquis.':'Réécoute le document et repère les informations essentielles.'}`;
   }
   function openClass(id){closeLiveSession();currentClassId=id;showSection('class');setBack('Toutes les classes',renderHome);renderClass();}
   function renderClass(){const c=getClass();if(!c){renderHome();return;}$('classTitle').textContent=c.name;$('namesInput').value=c.names.join('\n');renderStudents();renderWheel();renderActivities();}
@@ -735,7 +753,7 @@ function initTeacherMode(remoteRows){
   $('delfListenBtn').onclick=playDelfAudio;$('delfListenAgainBtn').onclick=playDelfAudio;
   $('delfAudio').addEventListener('ended',()=>{$('delfAudioStatus').textContent='Écoute terminée. Tu peux réécouter ou répondre.';});
   $('delfSubmitBtn').onclick=submitDelfQuiz;
-  $('delfResetBtn').onclick=()=>{$('delfAudio').pause();$('delfAudio').currentTime=0;renderDelfQuiz();$('delfAudioStatus').textContent='Document sonore officiel prêt · durée : environ 4 min 41 s.';};
+  $('delfResetBtn').onclick=()=>{$('delfAudio').pause();$('delfAudio').currentTime=0;renderDelfQuiz();};
   $('newClassBtn').onclick=()=>openModal('new'); $('renameBtn').onclick=()=>openModal('edit'); $('deleteBtn').onclick=()=>{const c=getClass();if(c&&confirm(`Supprimer définitivement la classe « ${c.name} » ?`)){classes=classes.filter(x=>x.id!==c.id);saveClasses();renderHome();}};
   $('saveNamesBtn').onclick=()=>{const c=getClass();const names=[...new Set($('namesInput').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean))].slice(0,150);c.names=names;c.absent=c.absent.filter(n=>names.includes(n));c.picked=[];saveClasses();resetWheelVisual();renderStudents();renderWheel();$('winner').textContent='Liste enregistrée !';};
   $('spinBtn').onclick=spinWheel; $('hubSpin').onclick=spinWheel; $('resetWheelBtn').onclick=()=>{const c=getClass();c.picked=[];saveClasses();resetWheelVisual();renderStudents();}; $('resetPickedBtn').onclick=()=>{getClass().picked=[];saveClasses();hideCelebration();$('winner').textContent="Historique effacé.";renderStudents();renderWheel();}; $('noRepeat').onchange=()=>{hideCelebration();renderWheel();};
