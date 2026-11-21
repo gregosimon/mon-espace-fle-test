@@ -604,6 +604,15 @@ function initTeacherMode(remoteRows){
       {prompt:'Pour les malvoyants, les vêtements permettent de…',choices:['développer la confiance en soi.','s’intégrer professionnellement.','discuter de la mode avec leurs amis.'],answer:0,points:1.5},
       {prompt:'Quel appel lance Hayette ?',choices:['Elle a besoin de personnes pour l’aider.','Elle invite les malvoyants à la contacter.','Elle recherche un local pour l’association.'],answer:0,points:1.5},
       {prompt:'Quand ils entrent dans l’association, les bénévoles doivent…',choices:['assister à une présentation de la responsable.','participer à une réunion avec d’autres membres.','avoir un rendez-vous téléphonique avec un malvoyant.'],answer:1,points:1.5}
+    ]},
+    'b1-co-3':{label:'Exercice 3',title:'Exercice 3 · L’entreprise Baluchon',intro:'Lis les sept questions, écoute deux fois l’émission de radio, puis réponds.',audio:'assets/audio/delf-b1-tp-coll-exemple1-exercice3.mp3',duration:'environ 5 min 15 s',total:9,questions:[
+      {prompt:'La société Baluchon…',choices:['apporte des repas dans les entreprises.','propose des cours de cuisine aux salariés.','livre des produits dans les restaurations collectives.'],answer:0,points:1.5},
+      {prompt:'Selon François Dechy, le temps que les gens prennent pour manger…',choices:['diminue.','est stable.','augmente.'],answer:0,points:1},
+      {prompt:'Selon François Dechy, le moment du déjeuner est important pour…',choices:['mieux travailler.','rester en bonne santé.','rencontrer ses collègues.'],answer:0,points:1},
+      {prompt:'François Dechy veut proposer un service…',choices:['rapide.','biologique.','bon marché.'],answer:1,points:1},
+      {prompt:'François Dechy travaille avec…',choices:['de jeunes étudiants.','des personnes en difficulté.','des diplômés de la restauration.'],answer:1,points:1.5},
+      {prompt:'Baluchon est une entreprise qui propose aussi…',choices:['des formations professionnalisantes.','des rencontres avec de grands cuisiniers.','des cours de lecture et de mathématiques.'],answer:0,points:1.5},
+      {prompt:'Quel est l’avantage de la cuisine prêtée par la mairie ? Elle est…',choices:['bien située.','très grande.','toute équipée.'],answer:0,points:1.5}
     ]}
   };
   let selectedDelfLevel='B1',selectedDelfExercise='b1-co-1';
@@ -615,10 +624,10 @@ function initTeacherMode(remoteRows){
     $('delfLevelTitle').textContent='Niveau '+selectedDelfLevel;
     $('delfLevelTabs').innerHTML=levels.map(level=>`<button type="button" class="delf-tab ${level===selectedDelfLevel?'active':''}" data-level="${level}">${level}</button>`).join('');
     $('delfLevelTabs').querySelectorAll('[data-level]').forEach(btn=>btn.onclick=()=>{selectedDelfLevel=btn.dataset.level;renderDelf();});
-    const coDone=['b1-co-1','b1-co-2'].filter(id=>progress[id]?.completed).length;
-    const completed=delfSkills.filter(skill=>skill.id==='co'&&selectedDelfLevel==='B1'?coDone===2:progress[selectedDelfLevel+'-'+skill.id]?.completed).length;
+    const coDone=['b1-co-1','b1-co-2','b1-co-3'].filter(id=>progress[id]?.completed).length;
+    const completed=delfSkills.filter(skill=>skill.id==='co'&&selectedDelfLevel==='B1'?coDone===3:progress[selectedDelfLevel+'-'+skill.id]?.completed).length;
     const percent=Math.round(completed/delfSkills.length*100);$('delfOverallLabel').textContent='Progression : '+percent+' %';$('delfOverallBar').style.width=percent+'%';
-    $('delfSkillGrid').innerHTML=delfSkills.map(skill=>{const ready=selectedDelfLevel==='B1'&&skill.id==='co';const result=progress[selectedDelfLevel+'-'+skill.id];const detail=ready?`${coDone}/2 exercice${coDone>1?'s':''} terminé${coDone>1?'s':''}`:result?`Meilleur résultat : ${result.score}/${result.total}`:'Structure prête · activités à ajouter.';return `<article class="quiz-card delf-skill-card ${ready?'':'unavailable'}"><div class="skill-icon">${skill.icon}</div><strong>${escapeHtml(skill.name)}</strong><span>${detail}</span><button type="button" ${ready?'data-delf-exercise="b1-co"':'disabled'} class="${ready?'':'button-soft'}">${coDone?'Continuer':'Commencer'}</button></article>`;}).join('');
+    $('delfSkillGrid').innerHTML=delfSkills.map(skill=>{const ready=selectedDelfLevel==='B1'&&skill.id==='co';const result=progress[selectedDelfLevel+'-'+skill.id];const detail=ready?`${coDone}/3 exercice${coDone>1?'s':''} terminé${coDone>1?'s':''}`:result?`Meilleur résultat : ${result.score}/${result.total}`:'Structure prête · activités à ajouter.';return `<article class="quiz-card delf-skill-card ${ready?'':'unavailable'}"><div class="skill-icon">${skill.icon}</div><strong>${escapeHtml(skill.name)}</strong><span>${detail}</span><button type="button" ${ready?'data-delf-exercise="b1-co"':'disabled'} class="${ready?'':'button-soft'}">${coDone?'Continuer':'Commencer'}</button></article>`;}).join('');
     const launch=document.querySelector('[data-delf-exercise]');if(launch)launch.onclick=openDelfExercise;
   }
   function openDelfExercise(){showSection('delfExercise');setBack('Préparer le DELF',openDelf);renderDelfQuiz();}
