@@ -316,22 +316,15 @@ hr.separator{border:0;border-top:1px solid #e4ddf7;margin:20px 0}
         <h2 style="margin-top:14px">Exercice 1 · La fête de Célia</h2>
         <p class="muted">Lis les six questions, écoute deux fois la conversation, puis réponds. Barème officiel : 7 points.</p>
         <div class="delf-audio">
-          <div class="toolbar"><label for="delfQuestionFile" class="button-soft" style="cursor:pointer;border-radius:14px;padding:12px 18px;font-weight:800">📄 Charger le questionnaire PDF</label></div>
-          <input type="file" id="delfQuestionFile" accept="application/pdf,.pdf" hidden>
-          <iframe id="delfQuestionPreview" title="Questionnaire officiel DELF B1" class="hidden" style="width:100%;height:650px;border:0;border-radius:14px;margin-top:16px;background:#fff"></iframe>
-          <p id="delfQuestionStatus" class="hint" role="status">Charge le fichier « delf-b1-tp-candidat-coll-exemple1.pdf ». Il sera affiché localement sans être envoyé au site.</p>
-        </div>
-        <div class="delf-audio">
-          <div class="toolbar"><button id="delfListenBtn">▶ Première écoute</button><button id="delfListenAgainBtn" class="button-soft">↺ Deuxième écoute</button><label for="delfAudioFile" class="button-soft" style="cursor:pointer;border-radius:14px;padding:12px 18px;font-weight:800">📁 Charger le MP3 officiel</label></div>
-          <input type="file" id="delfAudioFile" accept="audio/mpeg,audio/mp3,audio/*" hidden>
-          <audio id="delfAudio" controls preload="metadata" style="display:none;width:100%;margin-top:16px"></audio>
-          <p id="delfAudioStatus" class="hint" role="status">Charge le fichier « delf-b1-tp-coll-exemple1-exercice1.mp3 ». Il restera uniquement sur cet ordinateur.</p>
+          <div class="toolbar"><button id="delfListenBtn">▶ Première écoute</button><button id="delfListenAgainBtn" class="button-soft">↺ Deuxième écoute</button></div>
+          <audio id="delfAudio" controls preload="metadata" src="assets/audio/delf-b1-tp-coll-exemple1-exercice1.mp3" style="display:block;width:100%;margin-top:16px"></audio>
+          <p id="delfAudioStatus" class="hint" role="status">Document sonore officiel prêt · durée : environ 4 min 41 s.</p>
         </div>
         <form id="delfQuizForm"></form>
         <div class="toolbar"><button id="delfSubmitBtn" type="button">Corriger mes réponses</button><button id="delfResetBtn" type="button" class="button-soft">Recommencer</button></div>
         <div id="delfResult" class="hidden" role="status"></div>
       </div>
-      <div class="notice">Conseil examen : lis rapidement les questions avant la première écoute et note les mots-clés pendant la seconde. Source des questions : France Éducation international, sujet démo DELF B1 tout public.</div>
+      <div class="notice">Conseil examen : lis rapidement les questions avant la première écoute et note les mots-clés pendant la seconde. Source : France Éducation international, sujet démo DELF B1 tout public. Reproduction autorisée.</div>
     </div>
   </section>
 
@@ -594,16 +587,14 @@ function initTeacherMode(remoteRows){
     {id:'po',icon:'🗣️',name:'Production orale',short:'PO'}
   ];
   const delfQuestions=[
-    {prompt:'Question 1',answer:2,points:1},
-    {prompt:'Question 2',answer:2,points:1.5},
-    {prompt:'Question 3',answer:2,points:1},
-    {prompt:'Question 4',answer:1,points:1.5},
-    {prompt:'Question 5',answer:1,points:1},
-    {prompt:'Question 6',answer:2,points:1}
+    {prompt:'Qu’est-ce que Célia va fêter ?',choices:['Son diplôme.','Son mariage.','Son anniversaire.'],answer:2,points:1},
+    {prompt:'Il y aura seulement quelques amis à la fête parce que…',choices:['la maison est petite.','beaucoup ne sont pas disponibles.','Célia veut avoir le temps de discuter avec chacun.'],answer:2,points:1.5},
+    {prompt:'Lilian va arriver un peu plus tard parce qu’il…',choices:['va manger chez ses parents.','doit s’occuper de ses enfants.','travaille une partie du week-end.'],answer:2,points:1},
+    {prompt:'Lilian accepte de venir à la fête parce qu’il…',choices:['adore la montagne.','est très proche de Célia.','souhaite découvrir la région.'],answer:1,points:1.5},
+    {prompt:'Le repas de la fête sera préparé par…',choices:['Célia.','tout le monde.','un restaurateur.'],answer:1,points:1},
+    {prompt:'Pour sa fête, Célia espère…',choices:['qu’il fera beau.','qu’elle aura un beau cadeau.','que tous ses amis viendront.'],answer:2,points:1}
   ];
   let selectedDelfLevel='B1';
-  let delfAudioUrl=null;
-  let delfQuestionUrl=null;
   function getDelfProgress(){try{return JSON.parse(localStorage.getItem(DELF_PROGRESS_KEY)||'{}')||{};}catch{return {};}}
   function saveDelfResult(score){const progress=getDelfProgress();progress['B1-co']={score,total:7,completed:true,updatedAt:new Date().toISOString()};localStorage.setItem(DELF_PROGRESS_KEY,JSON.stringify(progress));}
   function openDelf(){closeLiveSession();showSection('delf');setBack('Accueil',renderHome);renderDelf();}
@@ -619,13 +610,12 @@ function initTeacherMode(remoteRows){
   }
   function openDelfExercise(){showSection('delfExercise');setBack('Préparer le DELF',openDelf);renderDelfQuiz();}
   function renderDelfQuiz(){
-    $('delfQuizForm').innerHTML=delfQuestions.map((q,i)=>`<fieldset class="delf-question"><legend>${escapeHtml(q.prompt)} <span class="inline-note">${String(q.points).replace('.',',')} point${q.points>1?'s':''}</span></legend><div class="dialogue-choices">${['A','B','C'].map((choice,j)=>`<label class="delf-answer"><input type="radio" name="delf-q${i}" value="${j}"> <strong>Réponse ${choice}</strong></label>`).join('')}</div></fieldset>`).join('');
+    $('delfQuizForm').innerHTML=delfQuestions.map((q,i)=>`<fieldset class="delf-question"><legend>${i+1}. ${escapeHtml(q.prompt)} <span class="inline-note">${String(q.points).replace('.',',')} point${q.points>1?'s':''}</span></legend>${q.choices.map((choice,j)=>`<label class="delf-answer"><input type="radio" name="delf-q${i}" value="${j}"> <strong>${String.fromCharCode(65+j)}</strong> · ${escapeHtml(choice)}</label>`).join('')}</fieldset>`).join('');
     $('delfResult').className='hidden';$('delfResult').textContent='';
   }
   function playDelfAudio(){
     const audio=$('delfAudio');
-    if(!delfAudioUrl){$('delfAudioStatus').textContent='Charge d’abord le fichier MP3 officiel depuis ton ordinateur.';$('delfAudioFile').click();return;}
-    audio.currentTime=0;audio.play().catch(()=>{$('delfAudioStatus').textContent='Clique sur le lecteur audio pour démarrer l’écoute.';});$('delfAudioStatus').textContent='Lecture en cours… Le fichier reste local et n’est pas envoyé au site.';
+    audio.currentTime=0;audio.play().catch(()=>{$('delfAudioStatus').textContent='Clique sur le lecteur audio pour démarrer l’écoute.';});$('delfAudioStatus').textContent='Lecture en cours…';
   }
   function submitDelfQuiz(){
     let score=0,answered=0;delfQuestions.forEach((q,i)=>{const checked=document.querySelector(`input[name="delf-q${i}"]:checked`);if(checked){answered++;if(Number(checked.value)===q.answer)score+=q.points;}});
@@ -743,21 +733,9 @@ function initTeacherMode(remoteRows){
   // Buttons and controls
   $('openDelfBtn').onclick=openDelf;
   $('delfListenBtn').onclick=playDelfAudio;$('delfListenAgainBtn').onclick=playDelfAudio;
-  $('delfQuestionFile').addEventListener('change',event=>{
-    const file=event.target.files?.[0];if(!file)return;
-    if(delfQuestionUrl)URL.revokeObjectURL(delfQuestionUrl);
-    delfQuestionUrl=URL.createObjectURL(file);const preview=$('delfQuestionPreview');preview.src=delfQuestionUrl;preview.classList.remove('hidden');
-    $('delfQuestionStatus').textContent='Questionnaire local affiché : '+file.name+' · aucune donnée PDF n’est envoyée.';
-  });
-  $('delfAudioFile').addEventListener('change',event=>{
-    const file=event.target.files?.[0];if(!file)return;
-    if(delfAudioUrl)URL.revokeObjectURL(delfAudioUrl);
-    delfAudioUrl=URL.createObjectURL(file);const audio=$('delfAudio');audio.src=delfAudioUrl;audio.style.display='block';audio.load();
-    $('delfAudioStatus').textContent='Fichier local chargé : '+file.name+' · environ 4 min 41 s. Aucune donnée audio n’est envoyée.';
-  });
   $('delfAudio').addEventListener('ended',()=>{$('delfAudioStatus').textContent='Écoute terminée. Tu peux réécouter ou répondre.';});
   $('delfSubmitBtn').onclick=submitDelfQuiz;
-  $('delfResetBtn').onclick=()=>{$('delfAudio').pause();renderDelfQuiz();$('delfAudioStatus').textContent=delfAudioUrl?'MP3 local prêt pour une nouvelle écoute.':'Charge le fichier « delf-b1-tp-coll-exemple1-exercice1.mp3 ». Il restera uniquement sur cet ordinateur.';};
+  $('delfResetBtn').onclick=()=>{$('delfAudio').pause();$('delfAudio').currentTime=0;renderDelfQuiz();$('delfAudioStatus').textContent='Document sonore officiel prêt · durée : environ 4 min 41 s.';};
   $('newClassBtn').onclick=()=>openModal('new'); $('renameBtn').onclick=()=>openModal('edit'); $('deleteBtn').onclick=()=>{const c=getClass();if(c&&confirm(`Supprimer définitivement la classe « ${c.name} » ?`)){classes=classes.filter(x=>x.id!==c.id);saveClasses();renderHome();}};
   $('saveNamesBtn').onclick=()=>{const c=getClass();const names=[...new Set($('namesInput').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean))].slice(0,150);c.names=names;c.absent=c.absent.filter(n=>names.includes(n));c.picked=[];saveClasses();resetWheelVisual();renderStudents();renderWheel();$('winner').textContent='Liste enregistrée !';};
   $('spinBtn').onclick=spinWheel; $('hubSpin').onclick=spinWheel; $('resetWheelBtn').onclick=()=>{const c=getClass();c.picked=[];saveClasses();resetWheelVisual();renderStudents();}; $('resetPickedBtn').onclick=()=>{getClass().picked=[];saveClasses();hideCelebration();$('winner').textContent="Historique effacé.";renderStudents();renderWheel();}; $('noRepeat').onchange=()=>{hideCelebration();renderWheel();};
