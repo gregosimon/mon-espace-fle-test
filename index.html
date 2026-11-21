@@ -162,13 +162,14 @@ hr.separator{border:0;border-top:1px solid #e4ddf7;margin:20px 0}
 .dialogue-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:16px 0}
 .dialogue-choice{background:#f1edff;color:#5333ad;box-shadow:none;text-align:left;line-height:1.45;border:2px solid #e6dbff}
 .dialogue-choice.is-current{background:#6d45da;color:#fff;border-color:#6d45da}
-.delf-hero{background:linear-gradient(135deg,#171757 0%,#6546df 62%,#9b7cf3 100%);color:#fff;overflow:hidden;position:relative}
-.delf-hero:after{content:'DELF';position:absolute;right:-18px;bottom:-42px;font:900 130px/1 'Nunito',sans-serif;opacity:.08;letter-spacing:-8px}
-.delf-hero .muted{color:#e4ddff}.delf-levels,.delf-skills{display:flex;gap:9px;flex-wrap:wrap}
-.delf-tab{background:#f2edff;color:#6240c7;box-shadow:none;border:2px solid transparent}.delf-tab.active{background:#6546df;color:#fff;border-color:#a992f1}
+.delf-hero{background:linear-gradient(125deg,#4b16d1 0%,#a01ee8 42%,#ff3974 72%,#ff9e1f 100%);color:#fff;overflow:hidden;position:relative;border:0;box-shadow:0 24px 60px rgba(113,31,213,.34)}
+.delf-hero:before{content:'';position:absolute;width:230px;height:230px;border-radius:50%;right:15%;top:-115px;background:radial-gradient(circle,#fff8 0 7%,#ffe45e99 8% 28%,transparent 29%);filter:blur(.2px)}
+.delf-hero:after{content:'DELF';position:absolute;right:-18px;bottom:-42px;font:900 130px/1 'Nunito',sans-serif;opacity:.13;letter-spacing:-8px;transform:rotate(-3deg)}
+.delf-hero .eyebrow{color:#fff6a3!important}.delf-hero .muted{color:#fff;opacity:.9}.delf-hero h2,.delf-hero h3{text-shadow:0 4px 18px rgba(49,4,99,.3)}.delf-levels,.delf-skills{display:flex;gap:9px;flex-wrap:wrap}
+.delf-tab{background:linear-gradient(135deg,#f2edff,#ffe8f5);color:#6521bf;box-shadow:0 4px 0 #d2b9f4;border:2px solid transparent}.delf-tab.active{background:linear-gradient(135deg,#6b20da,#f03498);color:#fff;border-color:#ffdb64;box-shadow:0 5px 0 #a31d85}
 .delf-skill-card{min-height:185px;display:flex;flex-direction:column}.delf-skill-card .skill-icon{font-size:34px}.delf-skill-card button{margin-top:auto;align-self:flex-start}
-.delf-skill-card.unavailable{opacity:.68}.delf-progress{height:10px;background:#ece8f7;border-radius:999px;overflow:hidden;margin-top:10px}.delf-progress span{display:block;height:100%;background:linear-gradient(90deg,#2eaf82,#69d5ad);border-radius:inherit}
-.delf-exercise{max-width:900px;margin:0 auto}.delf-audio{background:#f3efff;border:1px solid #ddd3fa;border-radius:18px;padding:18px;margin:18px 0}.delf-question{border:1px solid var(--line);border-radius:16px;padding:17px;margin:13px 0}.delf-question legend{font-weight:800;padding:0 5px}.delf-answer{display:block;padding:8px;border-radius:10px}.delf-answer:hover{background:#f6f3ff}.delf-result{padding:18px;border-radius:16px;margin-top:18px;font-weight:700}.delf-result.success{background:#eafbf4;color:#187454}.delf-result.retry{background:#fff4df;color:#785719}
+.delf-skill-card{border-top:5px solid #c42ee8}.delf-skill-card:nth-child(2){border-top-color:#ff3b77}.delf-skill-card:nth-child(3){border-top-color:#ff9c1b}.delf-skill-card:nth-child(4){border-top-color:#21cbb2}.delf-skill-card.unavailable{opacity:.72}.delf-progress{height:12px;background:#eee5fb;border-radius:999px;overflow:hidden;margin-top:10px}.delf-progress span{display:block;height:100%;background:linear-gradient(90deg,#7b24e8,#fb3489,#ffad21);border-radius:inherit}
+.delf-exercise{max-width:900px;margin:0 auto}.delf-audio{background:linear-gradient(135deg,#eee5ff,#ffe6f2 60%,#fff0d1);border:2px solid #d5b8ff;border-radius:20px;padding:20px;margin:18px 0;box-shadow:0 12px 26px rgba(119,49,196,.12)}.delf-question{border:1px solid var(--line);border-left:5px solid #a837e7;border-radius:16px;padding:17px;margin:13px 0}.delf-question:nth-child(even){border-left-color:#ff4d78}.delf-question legend{font-weight:800;padding:0 5px}.delf-answer{display:block;padding:8px;border-radius:10px}.delf-answer:hover{background:#f6f3ff}.delf-result{padding:18px;border-radius:16px;margin-top:18px;font-weight:700}.delf-result.success{background:#eafbf4;color:#187454}.delf-result.retry{background:#fff4df;color:#785719}
 </style>
 </head>
 <body>
@@ -195,6 +196,12 @@ hr.separator{border:0;border-top:1px solid #e4ddf7;margin:20px 0}
 </header>
 <main>
   <section id="homeSection">
+    <div class="panel delf-hero" style="margin-bottom:26px">
+      <p class="eyebrow">✨ En route vers la réussite</p>
+      <h2>🎓 Préparer le DELF</h2>
+      <p class="muted" style="max-width:680px">Parcours A1, A2, B1 et B2 pour travailler la compréhension et la production, à l’écrit comme à l’oral.</p>
+      <button id="openDelfBtn" style="background:#fff;color:#6b22c9;box-shadow:0 5px 0 #ffd252;position:relative;z-index:1">Découvrir les entraînements →</button>
+    </div>
     <div class="top">
       <div>
         <p class="eyebrow">Bienvenue dans ton atelier pédagogique</p>
@@ -208,12 +215,6 @@ hr.separator{border:0;border-top:1px solid #e4ddf7;margin:20px 0}
       </div>
     </div>
     <div id="classGrid" class="classes"></div>
-    <div class="panel delf-hero" style="margin-top:22px">
-      <p class="eyebrow" style="color:#d7cbff">Nouvel espace d’entraînement</p>
-      <h3>🎓 Préparer le DELF</h3>
-      <p class="muted" style="max-width:680px">Parcours A1, A2, B1 et B2 pour travailler la compréhension et la production, à l’écrit comme à l’oral.</p>
-      <button id="openDelfBtn" style="background:#fff;color:#4f32bd;box-shadow:none;position:relative;z-index:1">Ouvrir la préparation →</button>
-    </div>
     <div class="notice">Les classes sont synchronisées sur Supabase lorsque l’indicateur affiche « Synchronisé ». Les quiz restent accessibles par QR code. Sur un ordinateur partagé, déconnecte-toi après le cours.</div>
   </section>
 
@@ -298,7 +299,7 @@ hr.separator{border:0;border-top:1px solid #e4ddf7;margin:20px 0}
     <div class="panel delf-hero">
       <p class="eyebrow" style="color:#d7cbff">Entraînement aux examens</p>
       <h2>Préparer le DELF</h2>
-      <p class="muted">Choisis un niveau puis une compétence. Les activités proposées ici sont originales ; aucun document protégé n’est hébergé.</p>
+      <p class="muted">Choisis un niveau puis une compétence. Le premier entraînement reprend un sujet démo officiel ; son audio reste local et n’est pas hébergé.</p>
     </div>
     <div class="panel" style="margin-top:20px">
       <div class="top" style="margin-bottom:14px"><div><p class="eyebrow">1 · Niveau</p><h3 id="delfLevelTitle">Niveau B1</h3></div><span class="tag" id="delfOverallLabel">Progression : 0 %</span></div>
@@ -312,17 +313,25 @@ hr.separator{border:0;border-top:1px solid #e4ddf7;margin:20px 0}
     <div class="delf-exercise">
       <div class="panel">
         <span class="tag">B1 · Compréhension de l’oral</span>
-        <h2 style="margin-top:14px">Une annonce à la médiathèque</h2>
-        <p class="muted">Écoute deux fois le document, puis réponds aux cinq questions. Situation et texte créés spécialement pour cet entraînement.</p>
+        <h2 style="margin-top:14px">Exercice 1 · La fête de Célia</h2>
+        <p class="muted">Lis les six questions, écoute deux fois la conversation, puis réponds. Barème officiel : 7 points.</p>
         <div class="delf-audio">
-          <div class="toolbar"><button id="delfListenBtn">▶ Écouter</button><button id="delfListenAgainBtn" class="button-soft">↺ Réécouter</button></div>
-          <p id="delfAudioStatus" class="hint" role="status">Document sonore prêt · environ 45 secondes</p>
+          <div class="toolbar"><label for="delfQuestionFile" class="button-soft" style="cursor:pointer;border-radius:14px;padding:12px 18px;font-weight:800">📄 Charger le questionnaire PDF</label></div>
+          <input type="file" id="delfQuestionFile" accept="application/pdf,.pdf" hidden>
+          <iframe id="delfQuestionPreview" title="Questionnaire officiel DELF B1" class="hidden" style="width:100%;height:650px;border:0;border-radius:14px;margin-top:16px;background:#fff"></iframe>
+          <p id="delfQuestionStatus" class="hint" role="status">Charge le fichier « delf-b1-tp-candidat-coll-exemple1.pdf ». Il sera affiché localement sans être envoyé au site.</p>
+        </div>
+        <div class="delf-audio">
+          <div class="toolbar"><button id="delfListenBtn">▶ Première écoute</button><button id="delfListenAgainBtn" class="button-soft">↺ Deuxième écoute</button><label for="delfAudioFile" class="button-soft" style="cursor:pointer;border-radius:14px;padding:12px 18px;font-weight:800">📁 Charger le MP3 officiel</label></div>
+          <input type="file" id="delfAudioFile" accept="audio/mpeg,audio/mp3,audio/*" hidden>
+          <audio id="delfAudio" controls preload="metadata" style="display:none;width:100%;margin-top:16px"></audio>
+          <p id="delfAudioStatus" class="hint" role="status">Charge le fichier « delf-b1-tp-coll-exemple1-exercice1.mp3 ». Il restera uniquement sur cet ordinateur.</p>
         </div>
         <form id="delfQuizForm"></form>
         <div class="toolbar"><button id="delfSubmitBtn" type="button">Corriger mes réponses</button><button id="delfResetBtn" type="button" class="button-soft">Recommencer</button></div>
         <div id="delfResult" class="hidden" role="status"></div>
       </div>
-      <div class="notice">Conseil examen : lis rapidement les questions avant la première écoute et note les mots-clés pendant la seconde.</div>
+      <div class="notice">Conseil examen : lis rapidement les questions avant la première écoute et note les mots-clés pendant la seconde. Source des questions : France Éducation international, sujet démo DELF B1 tout public.</div>
     </div>
   </section>
 
@@ -585,16 +594,18 @@ function initTeacherMode(remoteRows){
     {id:'po',icon:'🗣️',name:'Production orale',short:'PO'}
   ];
   const delfQuestions=[
-    {prompt:'Pourquoi la médiathèque fermera-t-elle plus tôt ?',choices:['Pour une réunion du personnel','Pour des travaux électriques','Pour une fête municipale'],answer:1},
-    {prompt:'À quelle heure les visiteurs devront-ils partir ?',choices:['À 16 h 30','À 17 h','À 18 h'],answer:0},
-    {prompt:'Quel service restera accessible ?',choices:['Le café','Les ordinateurs','La boîte de retour extérieure'],answer:2},
-    {prompt:'Quand la médiathèque rouvrira-t-elle ?',choices:['Vendredi matin','Samedi matin','Lundi après-midi'],answer:1},
-    {prompt:'Que doivent faire les personnes inscrites à l’atelier ?',choices:['Téléphoner pour confirmer','Venir dans une autre salle','Attendre un courriel'],answer:2}
+    {prompt:'Question 1',answer:2,points:1},
+    {prompt:'Question 2',answer:2,points:1.5},
+    {prompt:'Question 3',answer:2,points:1},
+    {prompt:'Question 4',answer:1,points:1.5},
+    {prompt:'Question 5',answer:1,points:1},
+    {prompt:'Question 6',answer:2,points:1}
   ];
-  const delfAudioText="Bonjour à toutes et à tous. Nous vous informons qu'en raison de travaux électriques, la médiathèque municipale fermera exceptionnellement ses portes à seize heures trente ce vendredi. La boîte de retour située à l'extérieur restera accessible toute la soirée. La médiathèque rouvrira samedi à dix heures, aux horaires habituels. L'atelier de conversation française prévu vendredi à dix-sept heures est reporté. Les personnes inscrites recevront un courriel avec une nouvelle date. Merci de votre compréhension.";
   let selectedDelfLevel='B1';
+  let delfAudioUrl=null;
+  let delfQuestionUrl=null;
   function getDelfProgress(){try{return JSON.parse(localStorage.getItem(DELF_PROGRESS_KEY)||'{}')||{};}catch{return {};}}
-  function saveDelfResult(score){const progress=getDelfProgress();progress['B1-co']={score,total:delfQuestions.length,completed:true,updatedAt:new Date().toISOString()};localStorage.setItem(DELF_PROGRESS_KEY,JSON.stringify(progress));}
+  function saveDelfResult(score){const progress=getDelfProgress();progress['B1-co']={score,total:7,completed:true,updatedAt:new Date().toISOString()};localStorage.setItem(DELF_PROGRESS_KEY,JSON.stringify(progress));}
   function openDelf(){closeLiveSession();showSection('delf');setBack('Accueil',renderHome);renderDelf();}
   function renderDelf(){
     const progress=getDelfProgress(),levels=['A1','A2','B1','B2'];
@@ -608,19 +619,19 @@ function initTeacherMode(remoteRows){
   }
   function openDelfExercise(){showSection('delfExercise');setBack('Préparer le DELF',openDelf);renderDelfQuiz();}
   function renderDelfQuiz(){
-    $('delfQuizForm').innerHTML=delfQuestions.map((q,i)=>`<fieldset class="delf-question"><legend>${i+1}. ${escapeHtml(q.prompt)}</legend>${q.choices.map((choice,j)=>`<label class="delf-answer"><input type="radio" name="delf-q${i}" value="${j}"> ${escapeHtml(choice)}</label>`).join('')}</fieldset>`).join('');
+    $('delfQuizForm').innerHTML=delfQuestions.map((q,i)=>`<fieldset class="delf-question"><legend>${escapeHtml(q.prompt)} <span class="inline-note">${String(q.points).replace('.',',')} point${q.points>1?'s':''}</span></legend><div class="dialogue-choices">${['A','B','C'].map((choice,j)=>`<label class="delf-answer"><input type="radio" name="delf-q${i}" value="${j}"> <strong>Réponse ${choice}</strong></label>`).join('')}</div></fieldset>`).join('');
     $('delfResult').className='hidden';$('delfResult').textContent='';
   }
   function playDelfAudio(){
-    if(!('speechSynthesis' in window)){$('delfAudioStatus').textContent='La synthèse vocale n’est pas disponible dans ce navigateur.';return;}
-    window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(delfAudioText);utterance.lang='fr-FR';utterance.rate=.92;
-    utterance.onstart=()=>{$('delfAudioStatus').textContent='Lecture en cours…';};utterance.onend=()=>{$('delfAudioStatus').textContent='Lecture terminée. Tu peux réécouter ou répondre.';};utterance.onerror=()=>{$('delfAudioStatus').textContent='La lecture audio a été interrompue.';};window.speechSynthesis.speak(utterance);
+    const audio=$('delfAudio');
+    if(!delfAudioUrl){$('delfAudioStatus').textContent='Charge d’abord le fichier MP3 officiel depuis ton ordinateur.';$('delfAudioFile').click();return;}
+    audio.currentTime=0;audio.play().catch(()=>{$('delfAudioStatus').textContent='Clique sur le lecteur audio pour démarrer l’écoute.';});$('delfAudioStatus').textContent='Lecture en cours… Le fichier reste local et n’est pas envoyé au site.';
   }
   function submitDelfQuiz(){
-    let score=0,answered=0;delfQuestions.forEach((q,i)=>{const checked=document.querySelector(`input[name="delf-q${i}"]:checked`);if(checked){answered++;if(Number(checked.value)===q.answer)score++;}});
+    let score=0,answered=0;delfQuestions.forEach((q,i)=>{const checked=document.querySelector(`input[name="delf-q${i}"]:checked`);if(checked){answered++;if(Number(checked.value)===q.answer)score+=q.points;}});
     const result=$('delfResult');result.classList.remove('hidden','success','retry');
     if(answered<delfQuestions.length){result.classList.add('retry');result.textContent=`Réponds encore à ${delfQuestions.length-answered} question(s) avant de corriger.`;return;}
-    saveDelfResult(score);result.classList.add(score>=4?'success':'retry');result.innerHTML=`Résultat : <strong>${score}/${delfQuestions.length}</strong>. ${score>=4?'Très bien ! La compréhension globale et les détails sont acquis.':'Réécoute le document et repère les horaires, les causes et les consignes.'}`;
+    saveDelfResult(score);result.classList.add(score>=5?'success':'retry');result.innerHTML=`Résultat : <strong>${String(score).replace('.',',')}/7</strong>. ${score>=5?'Très bien ! La compréhension globale et les détails sont acquis.':'Réécoute la conversation et repère les raisons données par les personnages.'}`;
   }
   function openClass(id){closeLiveSession();currentClassId=id;showSection('class');setBack('Toutes les classes',renderHome);renderClass();}
   function renderClass(){const c=getClass();if(!c){renderHome();return;}$('classTitle').textContent=c.name;$('namesInput').value=c.names.join('\n');renderStudents();renderWheel();renderActivities();}
@@ -732,8 +743,21 @@ function initTeacherMode(remoteRows){
   // Buttons and controls
   $('openDelfBtn').onclick=openDelf;
   $('delfListenBtn').onclick=playDelfAudio;$('delfListenAgainBtn').onclick=playDelfAudio;
+  $('delfQuestionFile').addEventListener('change',event=>{
+    const file=event.target.files?.[0];if(!file)return;
+    if(delfQuestionUrl)URL.revokeObjectURL(delfQuestionUrl);
+    delfQuestionUrl=URL.createObjectURL(file);const preview=$('delfQuestionPreview');preview.src=delfQuestionUrl;preview.classList.remove('hidden');
+    $('delfQuestionStatus').textContent='Questionnaire local affiché : '+file.name+' · aucune donnée PDF n’est envoyée.';
+  });
+  $('delfAudioFile').addEventListener('change',event=>{
+    const file=event.target.files?.[0];if(!file)return;
+    if(delfAudioUrl)URL.revokeObjectURL(delfAudioUrl);
+    delfAudioUrl=URL.createObjectURL(file);const audio=$('delfAudio');audio.src=delfAudioUrl;audio.style.display='block';audio.load();
+    $('delfAudioStatus').textContent='Fichier local chargé : '+file.name+' · environ 4 min 41 s. Aucune donnée audio n’est envoyée.';
+  });
+  $('delfAudio').addEventListener('ended',()=>{$('delfAudioStatus').textContent='Écoute terminée. Tu peux réécouter ou répondre.';});
   $('delfSubmitBtn').onclick=submitDelfQuiz;
-  $('delfResetBtn').onclick=()=>{window.speechSynthesis?.cancel();renderDelfQuiz();$('delfAudioStatus').textContent='Document sonore prêt · environ 45 secondes';};
+  $('delfResetBtn').onclick=()=>{$('delfAudio').pause();renderDelfQuiz();$('delfAudioStatus').textContent=delfAudioUrl?'MP3 local prêt pour une nouvelle écoute.':'Charge le fichier « delf-b1-tp-coll-exemple1-exercice1.mp3 ». Il restera uniquement sur cet ordinateur.';};
   $('newClassBtn').onclick=()=>openModal('new'); $('renameBtn').onclick=()=>openModal('edit'); $('deleteBtn').onclick=()=>{const c=getClass();if(c&&confirm(`Supprimer définitivement la classe « ${c.name} » ?`)){classes=classes.filter(x=>x.id!==c.id);saveClasses();renderHome();}};
   $('saveNamesBtn').onclick=()=>{const c=getClass();const names=[...new Set($('namesInput').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean))].slice(0,150);c.names=names;c.absent=c.absent.filter(n=>names.includes(n));c.picked=[];saveClasses();resetWheelVisual();renderStudents();renderWheel();$('winner').textContent='Liste enregistrée !';};
   $('spinBtn').onclick=spinWheel; $('hubSpin').onclick=spinWheel; $('resetWheelBtn').onclick=()=>{const c=getClass();c.picked=[];saveClasses();resetWheelVisual();renderStudents();}; $('resetPickedBtn').onclick=()=>{getClass().picked=[];saveClasses();hideCelebration();$('winner').textContent="Historique effacé.";renderStudents();renderWheel();}; $('noRepeat').onchange=()=>{hideCelebration();renderWheel();};
